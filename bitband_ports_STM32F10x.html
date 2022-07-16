@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title> Bitband Calculating </title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<script language="javascript">
+<!--
+PERIPH_BASE =     0x40000000;
+PERIPH_BB_BASE =  0x42000000;
+APB1PERIPH_BASE = PERIPH_BASE;
+APB2PERIPH_BASE = (PERIPH_BASE + 0x10000);
+
+ function calculateBitBand(){ 
+  bitBandAddress = PERIPH_BB_BASE + (document.all.port.value*1 + document.all.register.value*1 - PERIPH_BASE + APB2PERIPH_BASE)*0x20 + document.all.line.value*0x04;
+  document.all.calculatedBitBand.value='0x'+(bitBandAddress).toString(16);
+  document.all.calculatedBitBandDefine.value = '(*((volatile unsigned long *) '+document.all.calculatedBitBand.value+'))';
+ return;
+ }
+//-->
+</script>
+<style type="text/css">
+ table{font-size:16pt; font-family: Arial;}
+ button{font-size:14pt; font-family: Arial;}
+ table.table_one{
+   border: 2px solid #363;
+   }
+  td{
+   border: 0px;
+   } 
+
+</style>
+</head>
+<body>
+
+  <table class="table_one">
+	<tr>
+	 <td>Выберите порт / Choose a port:
+	 </td>
+	 <td>
+	  <select size = "1" name = "port">
+	   <option value="0x0800">GPIOA</option>
+	   <option value="0x0C00">GPIOB</option>
+	   <option value="0x1000">GPIOC</option>
+	   <option value="0x1400">GPIOD</option>
+	   <option value="0x1800">GPIOE</option>
+	   <option value="0x1C00">GPIOF</option>
+	   <option value="0x2000">GPIOG</option>
+	  </select>
+	 </td>
+	 <td rowspan="3">
+	  <button onClick="javascript: calculateBitBand();"><b>Рассчитать адрес <br/> Calculate address of bitband</b></button>
+	 </td>
+	</tr>
+
+	<tr>
+	 <td>Выберите регистр порта / Select a register:
+	 </td>
+	 <td>
+	  <select size = "1" name = "register">
+	   <option value="0x00">CRL</option>
+	   <option value="0x04">CRH</option>
+	   <option value="0x08">IDR</option>
+	   <option value="0x0C">ODR</option>
+	   <option value="0x10">BSRR</option>
+	   <option value="0x14">BRR</option>
+	   <option value="0x18">LCKR</option>
+	  </select>
+	 </td>
+	</tr>
+	<tr>
+	 <td>Выберите линию порта / Choose a line:
+	 </td>
+	 <td>
+	 	  <select size = "1" name = "line">
+		  <script language = "javascript">
+		   for(i=0; i<16; i++)
+		    document.write('<option value="'+i+'">'+i+'</option>');
+		  </script>
+	  </select>
+	 </td>
+	</tr>
+	<tr>
+	<td colspan ="3">
+	 Адрес/Address bitband: <input type="text" size="50" name="calculatedBitBand"/><br/>
+	 Разыменование указателя для / disreferencing pointer for #define: 
+	</td>
+	</tr>
+	<tr>
+	<td colspan="3">
+		 <input type="text" size="50" name="calculatedBitBandDefine"/>
+	</td>
+	</tr>
+	
+  </table>
+ 
+</body>
+</html>
